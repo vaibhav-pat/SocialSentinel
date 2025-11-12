@@ -1,0 +1,50 @@
+# Global configuration
+
+kafka:
+  bootstrap_servers: "kafka:9092"
+  topics:
+    reddit: "raw_posts_reddit"
+    twitter: "raw_posts_twitter"
+    forums: "raw_posts_forums"
+    normalized: "normalized_posts"
+    analytics_user: "analytics_user"
+
+elasticsearch:
+  url: "http://elasticsearch:9200"
+  index_users: "user_analytics"
+  index_posts: "normalized_posts"
+
+paths:
+  checkpoints: "/tmp/checkpoints"
+  delta_vertices: "/tmp/delta/vertices"
+  delta_edges: "/tmp/delta/edges"
+  model_dir: "/mnt/data/mental-health-streaming/models/mllib_linear_v1"
+
+embedding:
+  # Hugging Face model id for multilingual sentence embeddings
+  model_name: "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+  batch_size: 64
+
+translation:
+  enabled: false
+  # Model id used if enabled (heavy); you can also set per-language maps
+  model_name: "Helsinki-NLP/opus-mt-xx-en"
+  max_batch_size: 8
+
+graph:
+  window_hours: 72
+  pagerank:
+    reset_prob: 0.15
+    tol: 0.01
+
+risk:
+  weights:
+    content: 0.6
+    centrality: 0.3
+    sentiment_spike: 0.1
+  threshold_alert: 0.65  # tune on validation
+
+training:
+  input_csv: "/mnt/data/mental-health-streaming/data/sample_training.csv"
+  test_split: 0.2
+  seed: 42
