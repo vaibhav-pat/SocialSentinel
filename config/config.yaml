@@ -18,7 +18,7 @@ paths:
   checkpoints: "/tmp/checkpoints"
   delta_vertices: "/tmp/delta/vertices"
   delta_edges: "/tmp/delta/edges"
-  model_dir: "/mnt/data/mental-health-streaming/models/mllib_linear_v1"
+  model_dir: "models/mllib_linear_v1"
 
 embedding:
   # Hugging Face model id for multilingual sentence embeddings

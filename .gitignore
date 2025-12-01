@@ -1,0 +1,78 @@
+# -------------------------
+# Python
+# -------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.parquet
+*.db
+*.sqlite3
+
+# Virtual environment
+venv/
+.env/
+*.env
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs
+logs/
+*.log
+
+# -------------------------
+# Project-specific
+# -------------------------
+data/embedded.pkl
+data/precomputed_embeddings.parquet
+data/*.csv
+
+# Spark & Hadoop temp files
+spark-warehouse/
+derby.log
+metastore_db/
+
+# Output and checkpoints
+models/
+output/
+checkpoints/
+
+# -------------------------
+# IDE / OS Files
+# -------------------------
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# -------------------------
+# Docker
+# -------------------------
+docker-compose.override.yml
+*.pid
+
+# -------------------------
+# Others
+# -------------------------
+*.bak
+*.tmp
+
+# -------------------------
+# Python tooling & CI
+# -------------------------
+.python-version
+.pytest_cache/
+.mypy_cache/
+.cache/
+pip-wheel-metadata/
+*.egg-info/
+build/
+dist/
+*.egg
+.coverage
+htmlcov/
+.coverage.*
+.tox/
+.eggs/
