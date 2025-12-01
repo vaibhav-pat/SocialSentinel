@@ -1,8 +1,9 @@
-from langdetect import detect, DetectorFactory
+import threading
+
+import pandas as pd
+from langdetect import DetectorFactory, detect
 from pyspark.sql.functions import pandas_udf
 from pyspark.sql.types import StringType
-import pandas as pd
-import threading
 
 DetectorFactory.seed = 0
 
@@ -10,13 +11,16 @@ DetectorFactory.seed = 0
 _translator_ref = {"pipe": None}
 _translator_lock = threading.Lock()
 
+
 def _get_translator(model_name: str):
     if _translator_ref["pipe"] is None:
         with _translator_lock:
             if _translator_ref["pipe"] is None:
                 from transformers import pipeline
+
                 _translator_ref["pipe"] = pipeline("translation", model=model_name)
     return _translator_ref["pipe"]
+
 
 @pandas_udf(StringType())
 def detect_lang_udf(texts: pd.Series) -> pd.Series:
@@ -27,6 +31,7 @@ def detect_lang_udf(texts: pd.Series) -> pd.Series:
         except Exception:
             out.append("und")
     return pd.Series(out)
+
 
 def make_translate_to_en_udf(model_name: str, max_batch_size: int = 8):
     @pandas_udf(StringType())
@@ -50,5 +55,10 @@ def make_translate_to_en_udf(model_name: str, max_batch_size: int = 8):
         # outs is in order; but if empty inputs, keep blanks
         # Simple alignment for equal-length batches:
         # (This UDF expects full text for each row; for production, add better alignment)
-        return pd.Series(outs if len(outs)==len(arr) else [o if i < len(outs) else "" for i,o in enumerate(outs)])
+        return pd.Series(
+            outs
+            if len(outs) == len(arr)
+            else [o if i < len(outs) else "" for i, o in enumerate(outs)]
+        )
+
     return _translate_udf

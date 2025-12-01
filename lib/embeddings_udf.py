@@ -1,9 +1,9 @@
-import numpy as np
 from pyspark.sql.functions import udf
 from pyspark.sql.types import ArrayType, DoubleType
 from sentence_transformers import SentenceTransformer
 
 _model_cache = {}
+
 
 def make_sentence_embedding_udf(model_name: str, max_length: int = 64):
 
